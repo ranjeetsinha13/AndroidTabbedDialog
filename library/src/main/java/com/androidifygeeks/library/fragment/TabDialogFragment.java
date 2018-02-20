@@ -30,6 +30,8 @@ public class TabDialogFragment extends BaseDialogFragment {
 
     protected final static String ARG_TAB_BUTTON = "tab_button";
 
+    protected final static String ARG_CONTENT_PANE_HEIGHT = "content_pane_height";
+
 
     public static TabDialogBuilder createBuilder(Context context, FragmentManager fragmentManager) {
         return new TabDialogBuilder(context, fragmentManager, TabDialogFragment.class);
@@ -50,6 +52,9 @@ public class TabDialogFragment extends BaseDialogFragment {
         if (!TextUtils.isEmpty(title)) {
             builder.setTitle(title);
         }
+        final int height = getContentPaneHeight();
+        if (height > 0)
+            builder.setContentPaneHeight(height);
 
         final CharSequence subTitle = getSubTitle();
         if (!TextUtils.isEmpty(subTitle)) {
@@ -150,6 +155,10 @@ public class TabDialogFragment extends BaseDialogFragment {
         return getArguments().getCharSequenceArray(ARG_TAB_BUTTON);
     }
 
+    protected int getContentPaneHeight() {
+        return getArguments().getInt(ARG_CONTENT_PANE_HEIGHT);
+    }
+
 
     /**
      * Get positive button dialog listeners.
@@ -193,6 +202,7 @@ public class TabDialogFragment extends BaseDialogFragment {
         private CharSequence mPositiveButtonText;
         private CharSequence mNegativeButtonText;
         private CharSequence mNeutralButtonText;
+        private int mContentPaneHeight;
 
         private CharSequence[] mTabButtonText;
 
@@ -205,6 +215,12 @@ public class TabDialogFragment extends BaseDialogFragment {
         protected TabDialogBuilder self() {
             return this;
         }
+
+        public TabDialogBuilder setContentPaneHeight(int height) {
+            mContentPaneHeight = height;
+            return this;
+        }
+
 
         public TabDialogBuilder setTitle(int titleResourceId) {
             mTitle = mContext.getString(titleResourceId);
@@ -293,7 +309,11 @@ public class TabDialogFragment extends BaseDialogFragment {
 
             args.putCharSequenceArray(TabDialogFragment.ARG_TAB_BUTTON, mTabButtonText);
 
+            args.putInt(TabDialogFragment.ARG_CONTENT_PANE_HEIGHT, mContentPaneHeight);
+
             return args;
         }
+
+
     }
 }
